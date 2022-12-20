@@ -1,12 +1,29 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
+import 'database/hive_database.dart';
 import 'lang/translation_service.dart';
 import 'routes/app_pages.dart';
 import 'shared/logger/logger_utils.dart';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runZonedGuarded<Future<void>>(
+    () async {
+      // The following lines are the same as previously explained in "Handling uncaught errors"
+      await Hive.initFlutter();
+      var dir = await getApplicationDocumentsDirectory();
+      HiveDatabase database = HiveDatabase(dir.path);
+      await database.init();
+      Get.put<HiveDatabase>(database);
+      runApp(const MyApp());
+    },
+    (error, stack) {},
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 
+import '../../../../shared/app_container.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -8,97 +10,37 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        image: DecorationImage(
-          fit: BoxFit.cover,
-          colorFilter: ColorFilter.linearToSrgbGamma(),
-          image: NetworkImage(
-              "https://images.pexels.com/photos/3902882/pexels-photo-3902882.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"),
-        ),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Get.snackbar('title', 'message');
+    return Obx(
+      () => Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: GridView.count(
+          crossAxisCount: 3,
+          crossAxisSpacing: 4.0,
+          mainAxisSpacing: 8.0,
+          children: List.generate(
+            controller.tableList.length,
+            (index) {
+              final table = controller.tableList[index];
+              final tableUISize = (Get.size.width - 16 * 5) / 4;
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: AppContainer(
+                  child: SizedBox(
+                    width: tableUISize,
+                    height: tableUISize,
+                    child: Center(
+                      child: Text(
+                        table.name,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
             },
-          ),
-          title: Text('covid'.tr),
-          backgroundColor: Colors.white10,
-          elevation: 0,
-          centerTitle: true,
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 100,
-              ),
-              Text(
-                'total_confirmed'.tr,
-                style: TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                'total_deaths'.tr,
-                style: TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  textStyle: TextStyle(color: Colors.black),
-                  side: BorderSide(
-                    color: Colors.deepPurple,
-                    width: 3,
-                  ),
-                  shape: StadiumBorder(),
-                ),
-                onPressed: () async {
-                  //await Navigation  Get.rootDelegate.toNamed('/home/country');
-                  Get.toNamed('/home/country');
-                },
-                child: Text(
-                  'fetch_country'.tr,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  textStyle: TextStyle(color: Colors.black),
-                  side: BorderSide(
-                    color: Colors.deepPurple,
-                    width: 3,
-                  ),
-                  shape: StadiumBorder(),
-                ),
-                onPressed: () {
-                  Get.updateLocale(Locale('pt', 'BR'));
-                },
-                child: Text(
-                  'Update language to Portuguese',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ],
           ),
         ),
       ),
