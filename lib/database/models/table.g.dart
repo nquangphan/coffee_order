@@ -19,17 +19,20 @@ class TableModelAdapter extends TypeAdapter<TableModel> {
     return TableModel(
       name: fields[0] as String,
       id: fields[1] as int,
+      status: fields[2] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, TableModel obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.id);
+      ..write(obj.id)
+      ..writeByte(2)
+      ..write(obj.status);
   }
 
   @override
@@ -50,10 +53,12 @@ class TableModelAdapter extends TypeAdapter<TableModel> {
 TableModel _$TableModelFromJson(Map<String, dynamic> json) => TableModel(
       name: json['name'] as String,
       id: json['id'] as int? ?? -1,
+      status: json['status'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$TableModelToJson(TableModel instance) =>
     <String, dynamic>{
       'name': instance.name,
       'id': instance.id,
+      'status': instance.status,
     };

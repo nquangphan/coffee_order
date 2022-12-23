@@ -1,3 +1,5 @@
+import 'package:coffee_order/shared/app_button.dart';
+import 'package:coffee_order/shared/app_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
@@ -11,61 +13,51 @@ class MenuView extends GetView<MenuController> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+    return Scaffold(
+      floatingActionButton: AppButton(
+        onTap: controller.onAddMenuButtonPressed,
+        child: const Icon(Icons.add),
+      ),
+      body: Container(
+        margin: const EdgeInsets.only(top: kToolbarHeight),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Neumorphic(
-                child: SizedBox(
-                  width: Get.size.width,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: const TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Search by name',
-                        labelText: 'Search',
-                        prefixText: ' ',
-                        // suffixText: 'USD',
-                        // suffixStyle: TextStyle(color: Colors.green),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+            AppTextField(
+              label: 'Search',
+              hint: 'Search by name',
+              onChanged: controller.onSearchTextChange,
             ),
+            const SizedBox(height: 24),
             Expanded(
               child: Obx(
                 () => ListView.separated(
                   itemBuilder: (context, index) {
                     final drink = controller.drinkList[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: AppContainer(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: Row(
-                            children: [
-                              Text(
-                                drink.name,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                    return AppContainer(
+                      onTap: () {
+                        controller.onDrinkDetailPressed(drink);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: Row(
+                          children: [
+                            Text(
+                              drink.name,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
-                              Expanded(child: Container()),
-                              Text(
-                                drink.price.moneyFormat,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            ),
+                            Expanded(child: Container()),
+                            Text(
+                              drink.price.moneyFormat,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     );

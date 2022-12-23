@@ -6,6 +6,7 @@ import '../../../../shared/app_container.dart';
 import '../controllers/dashboard_controller.dart';
 
 class DashboardView extends GetView<DashboardController> {
+  static const routeName = '/DashboardView';
   const DashboardView({Key? key}) : super(key: key);
 
   @override

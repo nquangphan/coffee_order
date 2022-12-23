@@ -1,3 +1,4 @@
+import 'package:coffee_order/repository/menu_local_repository.dart';
 import 'package:get/get.dart';
 
 import '../../home/presentation/controllers/home_controller.dart';
@@ -14,7 +15,7 @@ class DashboardBinding extends Bindings {
       database: Get.find(),
     ));
     Get.put<MenuController>(MenuController(
-      database: Get.find(),
+      menuRepository: MenuLocalRepository(Get.find()),
     ));
   }
 }

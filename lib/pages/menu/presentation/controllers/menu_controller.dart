@@ -1,15 +1,14 @@
+import 'package:coffee_order/pages/menu_detail/presentation/views/menu_detail_view.dart';
+import 'package:coffee_order/repository/menu_repository.dart';
 import 'package:get/get.dart';
 
-import '../../../../database/hive_database.dart';
 import '../../../../database/models/drink.dart';
 
 class MenuController extends GetxController {
   RxList<DrinkModel> drinkList = <DrinkModel>[].obs;
-  MenuController({
-    required this.database,
-  });
+  MenuController({required this.menuRepository});
 
-  final HiveDatabase database;
+  final MenuRepository menuRepository;
 
   @override
   void onInit() {
@@ -18,6 +17,20 @@ class MenuController extends GetxController {
   }
 
   void getMenu() {
-    drinkList.value = database.drinkBox.values.toList();
+    drinkList.value = menuRepository.getMenu();
+  }
+
+  void onSearchTextChange(String value) {
+    drinkList.value = menuRepository.getMenuByName(value);
+  }
+
+  Future<void> onDrinkDetailPressed(DrinkModel drink) async {
+    await Get.toNamed(MenuDetailView.routeName, arguments: drink);
+    getMenu();
+  }
+
+  onAddMenuButtonPressed() async {
+    await Get.toNamed(MenuDetailView.routeName);
+    getMenu();
   }
 }

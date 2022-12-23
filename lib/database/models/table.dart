@@ -12,9 +12,12 @@ class TableModel extends HiveObject {
   String name;
   @HiveField(1)
   int id;
+  @HiveField(2)
+  int status;
   TableModel({
     required this.name,
     this.id = -1,
+    this.status = 0,
   });
 
   factory TableModel.fromJson(Map<String, dynamic> json) =>

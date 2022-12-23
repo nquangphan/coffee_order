@@ -1,12 +1,12 @@
 import 'package:coffee_order/repository/menu_local_repository.dart';
 import 'package:get/get.dart';
 
-import '../presentation/controllers/menu_controller.dart';
+import '../presentation/controllers/menu_detail_controller.dart';
 
-class MenuBinding extends Bindings {
+class MenuDetailBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put<MenuController>(MenuController(
+    Get.put<MenuDetailController>(MenuDetailController(
       menuRepository: MenuLocalRepository(Get.find()),
     ));
   }

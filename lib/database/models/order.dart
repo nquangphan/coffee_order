@@ -1,3 +1,4 @@
+import 'package:coffee_order/database/models/table.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -18,9 +19,12 @@ class OrderModel extends HiveObject {
   int id;
   @HiveField(3)
   int status;
+  @HiveField(4)
+  TableModel table;
   OrderModel({
     required this.totalPrice,
     required this.details,
+    required this.table,
     this.id = -1,
     this.status = 0,
   });
