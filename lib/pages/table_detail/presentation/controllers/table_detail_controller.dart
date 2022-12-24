@@ -32,8 +32,9 @@ class TableDetailController extends GetxController {
           totalPrice: 0,
           details: [],
           table: tableModel,
-          createDate: DateTime(DateTime.now().year, DateTime.now().month,
-              DateTime.now().day - 2),
+          createDate: DateTime.now(),
+          // DateTime(DateTime.now().year, DateTime.now().month,
+          //     DateTime.now().day - 2),
         );
     currentOrder.refresh();
   }
