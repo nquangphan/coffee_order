@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:coffee_order/api/app_api.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -19,6 +21,20 @@ Future<void> main() async {
       var dir = await getApplicationDocumentsDirectory();
       HiveDatabase database = HiveDatabase(dir.path);
       await database.init();
+      final options = BaseOptions(
+        responseType: ResponseType.json,
+        validateStatus: (status) {
+          return true;
+        },
+        headers: {'Accept': 'application/json'},
+        baseUrl: 'http://changelink.click/api/',
+        receiveTimeout: 30000, // 30s
+        sendTimeout: 30000, // 30s
+      );
+      final _dio = Dio(options);
+      final appAPI = AppApi(_dio);
+      Get.put(appAPI);
+
       Get.put<HiveDatabase>(database);
       runApp(const MyApp());
     },
