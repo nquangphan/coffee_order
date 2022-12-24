@@ -23,4 +23,10 @@ class TableModel extends HiveObject {
   factory TableModel.fromJson(Map<String, dynamic> json) =>
       _$TableModelFromJson(json);
   Map<String, dynamic> toJson() => _$TableModelToJson(this);
+
+  TableModel merge({required TableModel table}) {
+    name = table.name;
+    status = table.status;
+    return this;
+  }
 }

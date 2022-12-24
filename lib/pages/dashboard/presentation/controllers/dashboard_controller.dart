@@ -1,3 +1,6 @@
+import 'package:coffee_order/pages/report/presentation/controllers/report_controller.dart';
+import 'package:coffee_order/pages/report/presentation/views/report_view.dart';
+import 'package:coffee_order/repository/order_local_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,13 +20,14 @@ class DashboardController extends GetxController {
   List<Widget> widgetOptions = <Widget>[
     const HomeView(),
     const MenuView(),
-    const Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+    const ReportView(),
   ];
 
   void onItemTapped(int index) {
     selectedIndex.value = index;
+    if (index == 2) {
+      final ReportController reportController = Get.find();
+      reportController.refreshData();
+    }
   }
 }

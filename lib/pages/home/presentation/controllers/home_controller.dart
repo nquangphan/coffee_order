@@ -1,3 +1,4 @@
+import 'package:coffee_order/pages/table_detail/presentation/views/table_detail_view.dart';
 import 'package:get/get.dart';
 
 import '../../../../database/hive_database.dart';
@@ -19,5 +20,11 @@ class HomeController extends GetxController {
 
   void getTableList() {
     tableList.value = database.tableBox.values.toList();
+    tableList.refresh();
+  }
+
+  onTablePressed(TableModel table) async {
+    await Get.toNamed(TableDetailView.routeName, arguments: table);
+    getTableList();
   }
 }

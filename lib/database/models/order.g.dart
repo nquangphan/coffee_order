@@ -20,6 +20,7 @@ class OrderModelAdapter extends TypeAdapter<OrderModel> {
       totalPrice: fields[1] as int,
       details: (fields[0] as List).cast<OrderDetailModel>(),
       table: fields[4] as TableModel,
+      createDate: fields[5] as DateTime,
       id: fields[2] as int,
       status: fields[3] as int,
     );
@@ -28,7 +29,7 @@ class OrderModelAdapter extends TypeAdapter<OrderModel> {
   @override
   void write(BinaryWriter writer, OrderModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.details)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class OrderModelAdapter extends TypeAdapter<OrderModel> {
       ..writeByte(3)
       ..write(obj.status)
       ..writeByte(4)
-      ..write(obj.table);
+      ..write(obj.table)
+      ..writeByte(5)
+      ..write(obj.createDate);
   }
 
   @override
@@ -62,6 +65,7 @@ OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
           .map((e) => OrderDetailModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       table: TableModel.fromJson(json['table'] as Map<String, dynamic>),
+      createDate: DateTime.parse(json['createDate'] as String),
       id: json['id'] as int? ?? -1,
       status: json['status'] as int? ?? 0,
     );
@@ -73,4 +77,5 @@ Map<String, dynamic> _$OrderModelToJson(OrderModel instance) =>
       'id': instance.id,
       'status': instance.status,
       'table': instance.table,
+      'createDate': instance.createDate.toIso8601String(),
     };

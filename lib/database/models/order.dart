@@ -21,10 +21,13 @@ class OrderModel extends HiveObject {
   int status;
   @HiveField(4)
   TableModel table;
+  @HiveField(5)
+  DateTime createDate;
   OrderModel({
     required this.totalPrice,
     required this.details,
     required this.table,
+    required this.createDate,
     this.id = -1,
     this.status = 0,
   });

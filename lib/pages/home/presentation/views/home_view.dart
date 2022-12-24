@@ -10,40 +10,45 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.count(
-          crossAxisCount: 3,
-          crossAxisSpacing: 4.0,
-          mainAxisSpacing: 8.0,
-          children: List.generate(
-            controller.tableList.length,
-            (index) {
-              final table = controller.tableList[index];
-              final tableUISize = (Get.size.width - 16 * 5) / 4;
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: AppContainer(
-                  child: SizedBox(
-                    width: tableUISize,
-                    height: tableUISize,
-                    child: Center(
-                      child: Text(
-                        table.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+    return Obx(() => Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.only(top: kToolbarHeight),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Wrap(
+                  children: List.generate(
+                    controller.tableList.length,
+                    (index) {
+                      final table = controller.tableList[index];
+                      final tableUISize = (Get.size.width - 16 * 5) / 5;
+                      return Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: AppContainer(
+                          onTap: () => controller.onTablePressed(table),
+                          child: SizedBox(
+                            width: tableUISize,
+                            height: tableUISize,
+                            child: Center(
+                              child: Text(
+                                table.name,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: table.status == 1
+                                      ? Colors.amber[800]
+                                      : null,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 ),
-              );
-            },
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

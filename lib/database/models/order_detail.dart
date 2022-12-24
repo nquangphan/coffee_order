@@ -29,10 +29,10 @@ class OrderDetailModel extends HiveObject {
       _$OrderDetailModelFromJson(json);
   Map<String, dynamic> toJson() => _$OrderDetailModelToJson(this);
 
-  OrderDetailModel merge({required OrderDetailModel order}) {
-    quantity = order.quantity;
-    drink = order.drink;
-    status = order.status;
+  OrderDetailModel merge({required OrderDetailModel orderDetail}) {
+    quantity = orderDetail.quantity;
+    drink = orderDetail.drink;
+    status = orderDetail.status;
     return this;
   }
 }
