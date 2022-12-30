@@ -1,5 +1,6 @@
 import 'package:coffee_order/api/app_api.dart';
 import 'package:coffee_order/pages/table_detail/presentation/views/table_detail_view.dart';
+import 'package:coffee_order/repository/table_repository.dart';
 import 'package:coffee_order/shared/app_button.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
@@ -11,10 +12,10 @@ import '../../../../database/models/table.dart';
 class HomeController extends GetxController {
   RxList<TableModel> tableList = <TableModel>[].obs;
   HomeController({
-    required this.database,
+    required this.tableRepository,
   });
 
-  final HiveDatabase database;
+  final TableRepository tableRepository;
 
   final AppApi appAPI = Get.find();
 
@@ -22,6 +23,9 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     getTableList();
+  }
+
+  configAppStoreVersion() {
     appAPI.getAppConfigData().then((config) {
       if (config.mogame == 'true') {
         Get.bottomSheet(
@@ -88,8 +92,8 @@ class HomeController extends GetxController {
     });
   }
 
-  void getTableList() {
-    tableList.value = database.tableBox.values.toList();
+  Future<void> getTableList() async {
+    tableList.value = await tableRepository.getTable();
     tableList.refresh();
   }
 

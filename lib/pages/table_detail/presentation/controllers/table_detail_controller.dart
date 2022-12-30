@@ -21,22 +21,31 @@ class TableDetailController extends GetxController {
   late final Rx<OrderModel?> currentOrder = Rx<OrderModel?>(null);
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
-    getCurrentOrder();
+    await getCurrentOrder();
   }
 
-  void getCurrentOrder() {
-    currentOrder.value = orderRepository.getOrderByTableId(tableModel.id) ??
-        OrderModel(
-          totalPrice: 0,
-          details: [],
-          table: tableModel,
-          createDate: DateTime.now(),
-          // DateTime(DateTime.now().year, DateTime.now().month,
-          //     DateTime.now().day - 2),
-        );
+  Future<void> getCurrentOrder() async {
+    currentOrder.value =
+        await orderRepository.getOrderByTableId(tableModel.id) ??
+            OrderModel(
+              totalPrice: 0,
+              details: [],
+              table: tableModel,
+              createDate: DateTime.now(),
+              // DateTime(DateTime.now().year, DateTime.now().month,
+              //     DateTime.now().day - 2),
+            );
     currentOrder.refresh();
+  }
+
+  int get totalDrink {
+    int total = 0;
+    currentOrder.value?.details.forEach((element) {
+      total += element.quantity;
+    });
+    return total;
   }
 
   onPayButtonPressed() {
@@ -143,13 +152,13 @@ class TableDetailController extends GetxController {
     getCurrentOrder();
   }
 
-  void onUpdateOrderDetail(OrderDetailModel detail) {
+  Future<void> onUpdateOrderDetail(OrderDetailModel detail) async {
     if (currentOrder.value != null) {
       int totalPrice = caculeteTotalPrice();
       if (totalPrice == 0) {
         currentOrder.value?.details = [];
       }
-      orderRepository.updateOrder(currentOrder.value!);
+      await orderRepository.updateOrder(currentOrder.value!);
       currentOrder.refresh();
     }
   }

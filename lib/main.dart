@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'database/hive_database.dart';
 import 'lang/translation_service.dart';
 import 'routes/app_pages.dart';
 import 'shared/logger/logger_utils.dart';
+
+const String app_type = 'online';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,19 +24,22 @@ Future<void> main() async {
       var dir = await getApplicationDocumentsDirectory();
       HiveDatabase database = HiveDatabase(dir.path);
       await database.init();
+      final sharePref = await SharedPreferences.getInstance();
       final options = BaseOptions(
         responseType: ResponseType.json,
         validateStatus: (status) {
           return true;
         },
         headers: {'Accept': 'application/json'},
-        baseUrl: 'http://changelink.click/api/',
+        baseUrl: 'http://${sharePref.getString('server_ip')}:8080/',
         receiveTimeout: 30000, // 30s
         sendTimeout: 30000, // 30s
       );
       final _dio = Dio(options);
       final appAPI = AppApi(_dio);
       Get.put(appAPI);
+
+      Get.put(sharePref);
 
       Get.put<HiveDatabase>(database);
       runApp(const MyApp());

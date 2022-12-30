@@ -15,7 +15,7 @@ class MenuLocalRepository extends MenuRepository {
   }
 
   @override
-  void deleteMenu(DrinkModel drink) {
+  Future<void> deleteMenu(DrinkModel drink) async {
     final found = db.drinkBox.get(drink.id);
     if (found == null) {
       throw ('Drink not found');
@@ -24,23 +24,23 @@ class MenuLocalRepository extends MenuRepository {
   }
 
   @override
-  List<DrinkModel> getMenu() {
-    return db.drinkBox.values.toList();
+  Future<List<DrinkModel>> getMenu() {
+    return Future.value(db.drinkBox.values.toList());
   }
 
   @override
-  List<DrinkModel> getMenuByName(String name) {
-    return db.drinkBox.values
+  Future<List<DrinkModel>> getMenuByName(String name) {
+    return Future.value(db.drinkBox.values
         .where(
           (element) => element.name.toLowerCase().contains(
                 name.toLowerCase(),
               ),
         )
-        .toList();
+        .toList());
   }
 
   @override
-  void updateMenu(DrinkModel drink) {
+  Future<void> updateMenu(DrinkModel drink) async {
     var found = db.drinkBox.get(drink.id);
     if (found == null) {
       throw ('Drink not found');

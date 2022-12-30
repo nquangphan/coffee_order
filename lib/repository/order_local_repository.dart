@@ -37,7 +37,7 @@ class OrderLocalRepository extends OrderRepository {
   }
 
   @override
-  void deleteOrder(OrderModel order) {
+  Future<void> deleteOrder(OrderModel order) async {
     final found = db.orderBox.get(order.id);
     if (found == null) {
       throw ('order not found');
@@ -46,19 +46,19 @@ class OrderLocalRepository extends OrderRepository {
   }
 
   @override
-  List<OrderModel> getOrder() {
-    return db.orderBox.values.toList();
+  Future<List<OrderModel>> getOrder() {
+    return Future.value(db.orderBox.values.toList());
   }
 
   @override
-  List<OrderModel> getOrderByStatus(int status) {
-    return db.orderBox.values
+  Future<List<OrderModel>> getOrderByStatus(int status) {
+    return Future.value(db.orderBox.values
         .where((element) => element.status == status)
-        .toList();
+        .toList());
   }
 
   @override
-  void updateOrder(OrderModel order) {
+  Future<void> updateOrder(OrderModel order) async {
     final foundTable = db.tableBox.values
         .where((element) => element.id == order.table.id)
         .toList();
@@ -89,14 +89,14 @@ class OrderLocalRepository extends OrderRepository {
   }
 
   @override
-  OrderModel? getOrderByTableId(int tableId) {
+  Future<OrderModel?> getOrderByTableId(int tableId) {
     final orders = db.orderBox.values
         .where((element) => element.table.id == tableId && element.status == 0)
         .toList();
     if (orders.isNotEmpty) {
-      return orders.first;
+      return Future.value(orders.first);
     }
-    return null;
+    return Future.value(null);
   }
 
   @override
@@ -106,13 +106,13 @@ class OrderLocalRepository extends OrderRepository {
   }
 
   @override
-  void updateOrderDetail(OrderDetailModel orderDetailModel) {
+  Future<void> updateOrderDetail(OrderDetailModel orderDetailModel) async {
     // TODO: implement updateOrderDetail
   }
 
   @override
-  List<OrderModel> getOrderByDate(DateTime date) {
-    return db.orderBox.values
+  Future<List<OrderModel>> getOrderByDate(DateTime date) {
+    return Future.value(db.orderBox.values
         .where(
           (element) =>
               element.status == 1 &&
@@ -120,18 +120,18 @@ class OrderLocalRepository extends OrderRepository {
               element.createDate.month == date.month &&
               element.createDate.year == date.year,
         )
-        .toList();
+        .toList());
   }
 
   @override
-  List<OrderModel> getOrderByMonth(DateTime date) {
-    return db.orderBox.values
+  Future<List<OrderModel>> getOrderByMonth(DateTime date) {
+    return Future.value(db.orderBox.values
         .where(
           (element) =>
               element.status == 1 &&
               element.createDate.month == date.month &&
               element.createDate.year == date.year,
         )
-        .toList();
+        .toList());
   }
 }

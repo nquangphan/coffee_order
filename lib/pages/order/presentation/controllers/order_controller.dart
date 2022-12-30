@@ -29,15 +29,14 @@ class OrderController extends GetxController {
         .firstWhereOrNull((element) => element.drink.id == drink.id);
   }
 
-  void getMenu() {
-    drinkList.value = menuRepository.getMenu();
+  Future<void> getMenu() async {
+    drinkList.value = await menuRepository.getMenu();
   }
 
-  void onSearchTextChange(String value) {
-    drinkList.value = menuRepository.getMenuByName(value);
+  Future<void> onSearchTextChange(String value) async {
+    drinkList.value = await menuRepository.getMenuByName(value);
   }
 
-  
   onAddMenuButtonPressed() async {
     await Get.toNamed(MenuDetailView.routeName);
     getMenu();

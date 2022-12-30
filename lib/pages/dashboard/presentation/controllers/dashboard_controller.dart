@@ -9,10 +9,7 @@ import '../../../home/presentation/views/home_view.dart';
 import '../../../menu/presentation/views/menu_view.dart';
 
 class DashboardController extends GetxController {
-  DashboardController({
-    required this.database,
-  });
-  final HiveDatabase database;
+  DashboardController();
 
   final selectedIndex = 0.obs;
   static const TextStyle optionStyle =

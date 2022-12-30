@@ -1,7 +1,5 @@
 import 'package:coffee_order/database/hive_database.dart';
-import 'package:coffee_order/database/models/drink.dart';
 import 'package:coffee_order/database/models/table.dart';
-import 'package:coffee_order/repository/menu_repository.dart';
 import 'package:coffee_order/repository/table_repository.dart';
 
 class TableLocalRepository extends TableRepository {
@@ -17,7 +15,7 @@ class TableLocalRepository extends TableRepository {
   }
 
   @override
-  void deleteTable(TableModel table) {
+  Future<void> deleteTable(TableModel table) async {
     final found = db.tableBox.get(table.id);
     if (found == null) {
       throw ('table not found');
@@ -26,23 +24,23 @@ class TableLocalRepository extends TableRepository {
   }
 
   @override
-  List<TableModel> getTable() {
-    return db.tableBox.values.toList();
+  Future<List<TableModel>> getTable() {
+    return Future.value(db.tableBox.values.toList());
   }
 
   @override
-  List<TableModel> getTableByName(String name) {
-    return db.tableBox.values
+  Future<List<TableModel>> getTableByName(String name) {
+    return Future.value(db.tableBox.values
         .where(
           (element) => element.name.toLowerCase().contains(
                 name.toLowerCase(),
               ),
         )
-        .toList();
+        .toList());
   }
 
   @override
-  void updateTable(TableModel table) {
+  Future<void> updateTable(TableModel table) async {
     var found = db.tableBox.get(table.id);
     if (found == null) {
       throw ('table not found');

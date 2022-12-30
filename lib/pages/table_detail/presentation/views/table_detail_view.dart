@@ -32,9 +32,7 @@ class TableDetailView extends GetView<TableDetailController> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   Obx(() => Text(
-                        controller.currentOrder.value?.details.length
-                                .toString() ??
-                            '',
+                        controller.totalDrink.toString(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -137,7 +135,7 @@ class TableDetailView extends GetView<TableDetailController> {
                 },
                 separatorBuilder: (context, index) =>
                     const SizedBox(height: 16),
-                itemCount: controller.currentOrder.value!.details.length,
+                itemCount: controller.currentOrder.value?.details.length ?? 0,
               ),
             ),
           ),

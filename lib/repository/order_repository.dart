@@ -3,13 +3,13 @@ import 'package:coffee_order/database/models/order_detail.dart';
 
 abstract class OrderRepository {
   Future<int> createOrder(OrderModel order);
-  void updateOrder(OrderModel order);
-  void deleteOrder(OrderModel order);
-  List<OrderModel> getOrder();
-  List<OrderModel> getOrderByStatus(int status);
-  OrderModel? getOrderByTableId(int tableId);
-  void updateOrderDetail(OrderDetailModel orderDetailModel);
+  Future<void> updateOrder(OrderModel order);
+  Future<void> deleteOrder(OrderModel order);
+  Future<List<OrderModel>> getOrder();
+  Future<List<OrderModel>> getOrderByStatus(int status);
+  Future<OrderModel?> getOrderByTableId(int tableId);
+  Future<void> updateOrderDetail(OrderDetailModel orderDetailModel);
   Future<int> createOrderDetail(OrderDetailModel orderDetailModel);
-  List<OrderModel> getOrderByDate(DateTime date);
-  List<OrderModel> getOrderByMonth(DateTime date);
+  Future<List<OrderModel>> getOrderByDate(DateTime date);
+  Future<List<OrderModel>> getOrderByMonth(DateTime date);
 }

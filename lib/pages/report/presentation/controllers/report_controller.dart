@@ -1,6 +1,15 @@
+import 'dart:convert';
+
+import 'package:coffee_order/api/app_api.dart';
+import 'package:coffee_order/api/response_interceptor.dart';
 import 'package:coffee_order/database/models/order.dart';
+import 'package:coffee_order/database/models/table.dart';
 import 'package:coffee_order/repository/order_repository.dart';
+import 'package:coffee_order/shared/common_bottom_sheet.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../database/models/drink.dart';
 
@@ -10,10 +19,13 @@ class ReportController extends GetxController {
   RxList<OrderModel> todayOrder = RxList.empty();
   Rx<Map<DateTime, List<OrderModel>>> reportMap = Rx({});
   final OrderRepository orderRepository;
-
+  late final TextEditingController serverIPController;
+  final sharePref = Get.find<SharedPreferences>();
   @override
   void onInit() {
     super.onInit();
+    serverIPController =
+        TextEditingController(text: sharePref.getString('server_ip'));
     getTodayReport();
     getSevenDayOrder();
   }
@@ -23,19 +35,19 @@ class ReportController extends GetxController {
     getSevenDayOrder();
   }
 
-  void getTodayReport() {
-    todayOrder.value = getReportByDate(DateTime.now());
+  Future<void> getTodayReport() async {
+    todayOrder.value = await getReportByDate(DateTime.now());
   }
 
-  List<OrderModel> getReportByDate(DateTime date) {
-    return orderRepository.getOrderByDate(date);
+  Future<List<OrderModel>> getReportByDate(DateTime date) async {
+    return  await orderRepository.getOrderByDate(date);
   }
 
-  void getSevenDayOrder() {
+  Future<void> getSevenDayOrder() async {
     for (int i = 0; i < 7; i++) {
       final today = DateTime.now();
       final reportDay = DateTime(today.year, today.month, today.day - i);
-      final orders = getReportByDate(reportDay);
+      final orders = await getReportByDate(reportDay);
       reportMap.value.addAll(
         {
           reportDay: orders,
@@ -71,5 +83,45 @@ class ReportController extends GetxController {
       revenue += (element.totalPrice);
     }
     return revenue;
+  }
+
+  onSaveServerIPPressed() async {
+    final options = BaseOptions(
+      responseType: ResponseType.json,
+      validateStatus: (status) {
+        return true;
+      },
+      headers: {'Accept': 'application/json'},
+      baseUrl: 'http://${serverIPController.text}:8080',
+      receiveTimeout: 30000, // 30s
+      sendTimeout: 30000, // 30s
+    );
+    final _dio = Dio(options);
+    _dio.interceptors.add(ResponseInterceptor());
+    final appAPI =
+        AppApi(_dio, baseUrl: 'http://${serverIPController.text}:8080');
+    try {
+      final tableListString = await appAPI.getListTable();
+      final tableList = (jsonDecode(tableListString) as List)
+          .map((e) => TableModel.fromJson(e))
+          .toList();
+      if (tableList.isNotEmpty == true) {
+        {
+          sharePref.setString('server_ip', serverIPController.text);
+          Get.delete<AppApi>();
+          Get.put(appAPI);
+        }
+      } else {
+        Get.bottomSheet(
+          const CommonBottomSheet(
+              title: 'Lỗi', description: 'Không thể kết nối đến server'),
+        );
+      }
+    } catch (e) {
+      Get.bottomSheet(
+        const CommonBottomSheet(
+            title: 'Lỗi', description: 'Không thể kết nối đến server'),
+      );
+    }
   }
 }
