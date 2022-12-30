@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:coffee_order/api/app_api.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -62,6 +63,11 @@ class MyApp extends StatelessWidget {
       locale: TranslationService.locale,
       fallbackLocale: TranslationService.fallbackLocale,
       translations: TranslationService(),
+      builder: EasyLoading.init(
+        builder: (context, widget) {
+          return widget!;
+        },
+      ),
     );
   }
 }

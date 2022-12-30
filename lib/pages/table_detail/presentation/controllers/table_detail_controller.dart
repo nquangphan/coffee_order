@@ -6,6 +6,7 @@ import 'package:coffee_order/pages/order/presentation/views/order_view.dart';
 import 'package:coffee_order/repository/order_repository.dart';
 import 'package:coffee_order/shared/app_button.dart';
 import 'package:coffee_order/shared/app_container.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 
@@ -64,7 +65,7 @@ class TableDetailController extends GetxController {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 Obx(() => Text(
-                      currentOrder.value?.details.length.toString() ?? '',
+                      totalDrink.toString(),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -117,12 +118,15 @@ class TableDetailController extends GetxController {
                     child: AppButton(
                       boxShape: NeumorphicBoxShape.roundRect(
                           BorderRadius.circular(12)),
-                      onTap: () {
+                      onTap: () async {
+                        EasyLoading.show();
                         if (currentOrder.value != null) {
                           caculeteTotalPrice();
                           currentOrder.value!.status = 1;
-                          orderRepository.updateOrder(currentOrder.value!);
+                          await orderRepository
+                              .updateOrder(currentOrder.value!);
                         }
+                        EasyLoading.dismiss();
                         Get.until((route) =>
                             route.settings.name == DashboardView.routeName);
                       },
@@ -153,6 +157,7 @@ class TableDetailController extends GetxController {
   }
 
   Future<void> onUpdateOrderDetail(OrderDetailModel detail) async {
+    EasyLoading.show();
     if (currentOrder.value != null) {
       int totalPrice = caculeteTotalPrice();
       if (totalPrice == 0) {
@@ -161,6 +166,7 @@ class TableDetailController extends GetxController {
       await orderRepository.updateOrder(currentOrder.value!);
       currentOrder.refresh();
     }
+    EasyLoading.dismiss();
   }
 
   int caculeteTotalPrice() {

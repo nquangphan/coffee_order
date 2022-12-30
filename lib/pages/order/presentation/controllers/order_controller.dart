@@ -3,6 +3,7 @@ import 'package:coffee_order/database/models/order_detail.dart';
 import 'package:coffee_order/pages/menu_detail/presentation/views/menu_detail_view.dart';
 import 'package:coffee_order/repository/menu_repository.dart';
 import 'package:coffee_order/repository/order_repository.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 
 import '../../../../database/models/drink.dart';
@@ -42,7 +43,8 @@ class OrderController extends GetxController {
     getMenu();
   }
 
-  void onUpdateOrderDetail(OrderDetailModel detail) {
+  Future<void> onUpdateOrderDetail(OrderDetailModel detail) async {
+    EasyLoading.show();
     final detailFound = getOrderDetailByDrink(detail.drink);
     if (detailFound == null) {
       currentOrder.value.details.add(detail);
@@ -51,10 +53,13 @@ class OrderController extends GetxController {
     }
     caculeteTotalPrice();
     if (currentOrder.value.id == -1) {
-      orderRepository.createOrder(currentOrder.value);
+      final orderId = await orderRepository.createOrder(currentOrder.value);
+      currentOrder.value.id = orderId;
+      currentOrder.refresh();
     } else {
-      orderRepository.updateOrder(currentOrder.value);
+      await orderRepository.updateOrder(currentOrder.value);
     }
+    EasyLoading.dismiss();
   }
 
   void caculeteTotalPrice() {

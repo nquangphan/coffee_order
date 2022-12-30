@@ -59,17 +59,21 @@ class TableDetailView extends GetView<TableDetailController> {
                       )),
                 ],
               ),
-              AppButton(
-                boxShape:
-                    NeumorphicBoxShape.roundRect(BorderRadius.circular(12)),
-                onTap: controller.onPayButtonPressed,
-                child: const Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text(
-                      'Pay',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              Obx(
+                () => AppButton(
+                  boxShape:
+                      NeumorphicBoxShape.roundRect(BorderRadius.circular(12)),
+                  onTap: controller.currentOrder.value?.id != -1
+                      ? controller.onPayButtonPressed
+                      : () {},
+                  child: const Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                        'Pay',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
                     ),
                   ),
                 ),
