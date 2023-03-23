@@ -37,10 +37,11 @@ class ReportController extends GetxController {
 
   Future<void> getTodayReport() async {
     todayOrder.value = await getReportByDate(DateTime.now());
+    todayOrder.refresh();
   }
 
   Future<List<OrderModel>> getReportByDate(DateTime date) async {
-    return  await orderRepository.getOrderByDate(date);
+    return await orderRepository.getOrderByDate(date);
   }
 
   Future<void> getSevenDayOrder() async {
@@ -70,9 +71,9 @@ class ReportController extends GetxController {
   int get sevenDayRevenue {
     int revenue = 0;
     reportMap.value.entries.toList().forEach((element) {
-      element.value.forEach((e) {
+      for (var e in element.value) {
         revenue += e.totalPrice;
-      });
+      }
     });
     return revenue;
   }
