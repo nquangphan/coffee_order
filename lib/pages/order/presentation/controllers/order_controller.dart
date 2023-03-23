@@ -51,7 +51,7 @@ class OrderController extends GetxController {
     } else {
       detailFound.merge(orderDetail: detail);
     }
-    caculeteTotalPrice();
+    calculateTotalPrice();
     if (currentOrder.value.id == -1) {
       final orderId = await orderRepository.createOrder(currentOrder.value);
       currentOrder.value.id = orderId;
@@ -62,7 +62,7 @@ class OrderController extends GetxController {
     EasyLoading.dismiss();
   }
 
-  void caculeteTotalPrice() {
+  void calculateTotalPrice() {
     var totalPrice = 0;
     for (var element in currentOrder.value.details) {
       totalPrice += (element.quantity * element.drink.price);

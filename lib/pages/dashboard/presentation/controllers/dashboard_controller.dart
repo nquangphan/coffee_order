@@ -1,10 +1,8 @@
 import 'package:coffee_order/pages/report/presentation/controllers/report_controller.dart';
 import 'package:coffee_order/pages/report/presentation/views/report_view.dart';
-import 'package:coffee_order/repository/order_local_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../database/hive_database.dart';
 import '../../../home/presentation/views/home_view.dart';
 import '../../../menu/presentation/views/menu_view.dart';
 

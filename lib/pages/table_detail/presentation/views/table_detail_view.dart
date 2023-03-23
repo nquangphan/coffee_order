@@ -2,7 +2,6 @@ import 'package:coffee_order/pages/menu/presentation/views/menu_view.dart';
 import 'package:coffee_order/pages/order/presentation/views/add_minus_widget.dart';
 import 'package:coffee_order/shared/app_button.dart';
 import 'package:coffee_order/shared/top_bar.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
 

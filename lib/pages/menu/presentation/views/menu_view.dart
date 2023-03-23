@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import '../../../../shared/app_container.dart';
 import '../controllers/menu_controller.dart';
 
-class MenuView extends GetView<MenuController> {
+class MenuView extends GetView<AppMenuController> {
   const MenuView({Key? key}) : super(key: key);
 
   @override

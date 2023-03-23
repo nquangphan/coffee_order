@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 
 import '../../../../database/models/drink.dart';
 
-class MenuController extends GetxController {
+class AppMenuController extends GetxController {
   RxList<DrinkModel> drinkList = <DrinkModel>[].obs;
-  MenuController({required this.menuRepository});
+  AppMenuController({required this.menuRepository});
 
   final MenuRepository menuRepository;
 

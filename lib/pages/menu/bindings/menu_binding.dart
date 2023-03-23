@@ -8,7 +8,7 @@ import '../presentation/controllers/menu_controller.dart';
 class MenuBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put<MenuController>(MenuController(
+    Get.put<AppMenuController>(AppMenuController(
       menuRepository: app_type == 'online'
           ? MenuServerRepository()
           : MenuLocalRepository(Get.find()),

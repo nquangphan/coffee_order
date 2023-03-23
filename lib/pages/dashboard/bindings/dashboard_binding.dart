@@ -21,7 +21,7 @@ class DashboardBinding extends Bindings {
           ? TableServerRepository()
           : TableLocalRepository(Get.find()),
     ));
-    Get.put<MenuController>(MenuController(
+    Get.put<AppMenuController>(AppMenuController(
       menuRepository: app_type == 'online'
           ? MenuServerRepository()
           : MenuLocalRepository(Get.find()),
